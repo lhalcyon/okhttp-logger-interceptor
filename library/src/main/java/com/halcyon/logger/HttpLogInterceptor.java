@@ -1,7 +1,5 @@
 package com.halcyon.logger;
 
-import android.util.Log;
-
 import com.halcyon.logger.util.JsonUtil;
 
 import java.io.IOException;
@@ -35,29 +33,17 @@ public class HttpLogInterceptor implements Interceptor {
     private static final Charset UTF8 = Charset.forName("UTF-8");
     private static String TAG = "Halcyon";
 
-    public interface Logger {
-        void log(String message);
 
-        /**
-         * A {@link Logger} defaults output appropriate for the current platform.
-         */
-        Logger DEFAULT = new Logger() {
-            @Override
-            public void log(String message) {
-                Log.d(TAG, message);
-            }
-        };
-    }
 
     public HttpLogInterceptor() {
-        this(Logger.DEFAULT);
+        this(ILogger.DEFAULT);
     }
 
-    public HttpLogInterceptor(Logger logger) {
+    public HttpLogInterceptor(ILogger logger) {
         this.logger = logger;
     }
 
-    private final Logger logger;
+    private final ILogger logger;
 
 
     @Override
@@ -73,16 +59,16 @@ public class HttpLogInterceptor implements Interceptor {
         if (hasRequestBody) {
             requestStartMessage += " (" + requestBody.contentLength() + "-byte body)";
         }
-        logger.log(requestStartMessage);
+        logger.d(TAG,requestStartMessage);
 
         if (hasRequestBody) {
             // Request body headers are only present when installed as a network interceptor. Force
             // them to be included (when available) so there values are known.
             if (requestBody.contentType() != null) {
-                logger.log("Content-Type: " + requestBody.contentType());
+                logger.d(TAG,"Content-Type: " + requestBody.contentType());
             }
             if (requestBody.contentLength() != -1) {
-                logger.log("Content-Length: " + requestBody.contentLength());
+                logger.d(TAG,"Content-Length: " + requestBody.contentLength());
             }
         }
 
@@ -91,14 +77,14 @@ public class HttpLogInterceptor implements Interceptor {
             String name = headers.name(i);
             // Skip headers from the request body as they are explicitly logged above.
             if (!"Content-Type".equalsIgnoreCase(name) && !"Content-Length".equalsIgnoreCase(name)) {
-                logger.log(name + ": " + headers.value(i));
+                logger.d(TAG,name + ": " + headers.value(i));
             }
         }
 
         if (!hasRequestBody) {
-            logger.log("--> END " + request.method());
+            logger.d(TAG,"--> END " + request.method());
         } else if (bodyEncoded(request.headers())) {
-            logger.log("--> END " + request.method() + " (encoded body omitted)");
+            logger.d(TAG,"--> END " + request.method() + " (encoded body omitted)");
         } else {
             Buffer buffer = new Buffer();
             requestBody.writeTo(buffer);
@@ -109,10 +95,10 @@ public class HttpLogInterceptor implements Interceptor {
                 charset = contentType.charset(UTF8);
             }
 
-            logger.log("");
-            logger.log(buffer.readString(charset));
+            logger.d(TAG,"");
+            logger.d(TAG,buffer.readString(charset));
 
-            logger.log("--> END " + request.method()
+            logger.d(TAG,"--> END " + request.method()
                     + " (" + requestBody.contentLength() + "-byte body)");
         }
 
@@ -122,18 +108,18 @@ public class HttpLogInterceptor implements Interceptor {
 
         ResponseBody responseBody = response.body();
         long contentLength = responseBody.contentLength();
-        logger.log("<-- " + response.code() + ' ' + response.message() + ' '
+        logger.d(TAG,"<-- " + response.code() + ' ' + response.message() + ' '
                 + response.request().url() + " (" + tookMs + "ms" + ')');
 
         Headers responseHeaders = response.headers();
         for (int i = 0, count = headers.size(); i < count; i++) {
-            logger.log(responseHeaders.name(i) + ": " + responseHeaders.value(i));
+            logger.d(TAG,responseHeaders.name(i) + ": " + responseHeaders.value(i));
         }
 
         if (!hasBody(response)) {
-            logger.log("<-- END HTTP");
+            logger.d(TAG,"<-- END HTTP");
         } else if (bodyEncoded(response.headers())) {
-            logger.log("<-- END HTTP (encoded body omitted)");
+            logger.d(TAG,"<-- END HTTP (encoded body omitted)");
         } else {
             BufferedSource source = responseBody.source();
             source.request(Long.MAX_VALUE); // Buffer the entire body.
@@ -145,20 +131,20 @@ public class HttpLogInterceptor implements Interceptor {
                 try {
                     charset = contentType.charset(UTF8);
                 } catch (UnsupportedCharsetException e) {
-                    logger.log("");
-                    logger.log("Couldn't decode the response body; charset is likely malformed.");
-                    logger.log("<-- END HTTP");
+                    logger.d(TAG,"");
+                    logger.d(TAG,"Couldn't decode the response body; charset is likely malformed.");
+                    logger.d(TAG,"<-- END HTTP");
 
                     return response;
                 }
             }
 
             if (contentLength != 0) {
-                logger.log("");
-                logger.log("\n" + JsonUtil.format(JsonUtil.convertUnicode(buffer.clone().readString(charset))));
+                logger.d(TAG,"");
+                logger.d(TAG,"\n" + JsonUtil.format(JsonUtil.convertUnicode(buffer.clone().readString(charset))));
             }
 
-            logger.log("<-- END HTTP (" + buffer.size() + "-byte body)");
+            logger.d(TAG,"<-- END HTTP (" + buffer.size() + "-byte body)");
         }
 
         return response;
