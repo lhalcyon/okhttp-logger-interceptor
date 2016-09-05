@@ -7,11 +7,7 @@ import android.util.Log;
 import com.halcyon.logger.BuildConfig;
 import com.halcyon.logger.ILogger;
 
-/**
- * ©2016-2017 kmhealthcloud.All Rights Reserved <p/>
- * Created by: L  <br/>
- * Description:
- */
+
 public class Logger implements ILogger {
 
     public static final boolean isDebug = BuildConfig.DEBUG;

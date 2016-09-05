@@ -23,11 +23,7 @@ import static java.net.HttpURLConnection.HTTP_NOT_MODIFIED;
 import static java.net.HttpURLConnection.HTTP_NO_CONTENT;
 import static okhttp3.internal.http.StatusLine.HTTP_CONTINUE;
 
-/**
- * ©2016-2017 kmhealthcloud.All Rights Reserved <p/>
- * Created by: L  <br/>
- * Description:
- */
+
 public class HttpLogInterceptor implements Interceptor {
 
     private static final Charset UTF8 = Charset.forName("UTF-8");

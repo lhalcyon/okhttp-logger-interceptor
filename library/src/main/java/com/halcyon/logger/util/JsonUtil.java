@@ -1,10 +1,6 @@
 package com.halcyon.logger.util;
 
-/**
- * ©2016-2017 kmhealthcloud.All Rights Reserved <p/>
- * Created by: L  <br/>
- * Description:
- */
+
 public class JsonUtil {
 
     public static String convertUnicode(String ori) {

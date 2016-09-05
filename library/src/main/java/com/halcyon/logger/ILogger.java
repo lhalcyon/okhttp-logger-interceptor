@@ -2,16 +2,10 @@ package com.halcyon.logger;
 
 import android.util.Log;
 
-/**
- * ©2016-2017 kmhealthcloud.All Rights Reserved <p/>
- * Created by: L  <br/>
- * Description:
- */
+
 public interface ILogger {
 
-    /**
-     * A {@link ILogger} defaults output appropriate for the current platform.
-     */
+
     ILogger DEFAULT = new ILogger() {
         @Override
         public String trace() {

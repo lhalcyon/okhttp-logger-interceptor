@@ -7,7 +7,6 @@ import android.view.View;
 
 import com.google.gson.Gson;
 import com.halcyon.logger.HttpLogInterceptor;
-import com.halcyon.logger.util.Logger;
 
 import java.util.concurrent.TimeUnit;
 
@@ -29,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
         OkHttpClient client = new OkHttpClient.Builder()
                 .connectTimeout(10000, TimeUnit.MILLISECONDS)
-                .addInterceptor(new HttpLogInterceptor(Logger.getInstance()))
+                .addInterceptor(new HttpLogInterceptor()) //new HttpLogInterceptor(Logger.getInstance())
                 .build();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Urls.BASE_URL)
