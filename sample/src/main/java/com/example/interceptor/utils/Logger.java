@@ -1,10 +1,10 @@
-package com.halcyon.logger.util;
+package com.example.interceptor.utils;
 
 import android.annotation.SuppressLint;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.halcyon.logger.BuildConfig;
+import com.example.interceptor.BuildConfig;
 import com.halcyon.logger.ILogger;
 
 

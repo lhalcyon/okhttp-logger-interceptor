@@ -78,7 +78,7 @@ OkHttpClient client = new OkHttpClient.Builder()
 
 ```
 #remove Log
--assumenosideeffects class com.halcyon.logger.util.Logger{
+-assumenosideeffects class com.example.interceptor.utils.Logger{
     *;
 }
 ```
