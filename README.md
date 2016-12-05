@@ -55,7 +55,14 @@ compile 'com.lhalcyon:okhttp-logger-interceptor:1.0.0'
 
 ```
 OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(new HttpLogInterceptor(Logger.getInstance())
+                .addInterceptor(new HttpLogInterceptor(new ILogger() {
+                    @Override
+                    public void d(String tag, String msg) {
+                        //自定义的日志类
+                        LogUtils.d(msg);
+                    }
+                }))
+                .addInterceptor(new HttpLogInterceptor())
                 .build();
 ```
 
@@ -74,13 +81,12 @@ OkHttpClient client = new OkHttpClient.Builder()
 -dontwarn okio.**
 ```
 
-打包的时候
+打包的时候需要将自定义的日志类的开关置false,然后
 
 ```
 #remove Log
--assumenosideeffects class com.example.interceptor.utils.Logger{
+-assumenosideeffects class [自定义的日志类如()]{
     *;
 }
 ```
 
-如用自定义`com.halcyon.logger.ILogger`的实现类,替换即可
