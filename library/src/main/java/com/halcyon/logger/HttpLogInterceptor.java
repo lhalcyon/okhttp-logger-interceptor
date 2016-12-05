@@ -84,7 +84,6 @@ public class HttpLogInterceptor implements Interceptor {
         } else {
             Buffer buffer = new Buffer();
             requestBody.writeTo(buffer);
-
             Charset charset = UTF8;
             MediaType contentType = requestBody.contentType();
             if (contentType != null) {
@@ -92,7 +91,7 @@ public class HttpLogInterceptor implements Interceptor {
             }
 
             logger.d(TAG,"");
-            logger.d(TAG,buffer.readString(charset));
+            logger.d(TAG,JsonUtil.convert(buffer.readString(charset)));
 
             logger.d(TAG,"--> END " + request.method()
                     + " (" + requestBody.contentLength() + "-byte body)");
@@ -137,7 +136,7 @@ public class HttpLogInterceptor implements Interceptor {
 
             if (contentLength != 0) {
                 logger.d(TAG,"");
-                logger.d(TAG,"\n" + JsonUtil.format(JsonUtil.convertUnicode(buffer.clone().readString(charset))));
+                logger.d(TAG,"\n" + JsonUtil.convert(buffer.clone().readString(charset)));
             }
 
             logger.d(TAG,"<-- END HTTP (" + buffer.size() + "-byte body)");

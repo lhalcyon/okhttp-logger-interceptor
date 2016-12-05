@@ -30,7 +30,7 @@ publish {
     userOrg = 'lhalcyon'
     groupId = 'com.lhalcyon'
     artifactId = 'okhttp-logger-interceptor'
-    publishVersion = '1.0.0'
+    publishVersion = '1.1.0'
     desc = 'logger used as okhttp interceptor'
     website = 'https://github.com/lhalcyon/okhttp-logger-interceptor'
 }

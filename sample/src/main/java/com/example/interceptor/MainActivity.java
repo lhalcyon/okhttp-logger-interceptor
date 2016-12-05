@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.google.gson.Gson;
 import com.halcyon.logger.HttpLogInterceptor;
+import com.example.interceptor.utils.Logger;
 
 import java.util.concurrent.TimeUnit;
 
@@ -28,7 +29,8 @@ public class MainActivity extends AppCompatActivity {
 
         OkHttpClient client = new OkHttpClient.Builder()
                 .connectTimeout(10000, TimeUnit.MILLISECONDS)
-                .addInterceptor(new HttpLogInterceptor()) //new HttpLogInterceptor(Logger.getInstance())
+                .addInterceptor(new HttpLogInterceptor(Logger.getInstance()))
+//                .addInterceptor(new HttpLogInterceptor())
                 .build();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Urls.BASE_URL)
@@ -40,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void baike(View v) {
+        Log.i("library debug:", com.halcyon.logger.BuildConfig.DEBUG+"");
+        Log.i("sample debug:",""+BuildConfig.DEBUG);
         mApi
                 .baike("379020","Github","103","json","600")
                 .subscribeOn(Schedulers.io())
