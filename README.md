@@ -51,7 +51,7 @@ compile 'com.lhalcyon:okhttp-logger-interceptor:1.0.0'
                 .build();
 ```
 
-无参构造默认使用的是`android.util.Log` .对于有日志开关需求的,可以传入一个`com.halcyon.logger.ILogger`的实现类.库中有一个实现类
+无参构造默认使用的是`android.util.Log` .对于有日志开关需求的,可以传入一个`com.halcyon.logger.ILogger`的实现类.`LogUtils`是[Sample](https://github.com/lhalcyon/okhttp-logger-interceptor/tree/master/sample)中的自定义日志工具类,开关为`BuildConfig.DEBUG`
 
 ```
 OkHttpClient client = new OkHttpClient.Builder()
@@ -62,13 +62,8 @@ OkHttpClient client = new OkHttpClient.Builder()
                         LogUtils.d(msg);
                     }
                 }))
-                .addInterceptor(new HttpLogInterceptor())
                 .build();
 ```
-
-当然可自实现接口进行整理
-
-
 
 ## ProGuard
 
@@ -81,11 +76,11 @@ OkHttpClient client = new OkHttpClient.Builder()
 -dontwarn okio.**
 ```
 
-打包的时候需要将自定义的日志类的开关置false,然后
+再就是如果有自定义工具类,打包的时候需要将自定义的日志类的开关置false,然后
 
 ```
 #remove Log
--assumenosideeffects class [自定义的日志类如()]{
+-assumenosideeffects class [自定义的日志类如Sample中的(com.example.interceptor.utils.LogUtils)]{
     *;
 }
 ```

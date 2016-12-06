@@ -7,5 +7,7 @@ package com.example.interceptor;
  */
 public interface Urls {
 
-    String BASE_URL = "http://baike.baidu.com/api/openapi/";
+    String BASE_URL = "http://apis.baidu.com/";
+
+    String RECIPE = BASE_URL + "tngou/cook/name";
 }

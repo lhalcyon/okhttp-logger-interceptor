@@ -8,8 +8,9 @@
     tools:context="com.example.interceptor.MainActivity">
 
     <Button
-        android:onClick="baike"
+        android:onClick="recipe"
+        android:textAllCaps="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="baike"/>
+        android:text="Recipe"/>
 </LinearLayout>

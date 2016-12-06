@@ -1,6 +1,7 @@
 package com.example.interceptor;
 
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.Query;
 import rx.Observable;
 
@@ -11,12 +12,7 @@ import rx.Observable;
  */
 public interface Api {
 
-    @GET("BaikeLemmaCardApi")
-    Observable<Response> baike(
-            @Query("appid") String appid,
-            @Query("bk_key") String bk_key,
-            @Query("scope") String scope,
-            @Query("format") String format,
-            @Query("bk_length") String bk_length
-    );
+    @Headers("apikey:"+Constant.API_KEY)
+    @GET(Urls.RECIPE)
+    Observable<Response> recipe(@Query("name")String name);
 }
