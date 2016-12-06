@@ -5,9 +5,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
+import com.example.interceptor.utils.LogUtils;
 import com.google.gson.Gson;
 import com.halcyon.logger.HttpLogInterceptor;
-import com.example.interceptor.utils.Logger;
+import com.halcyon.logger.ILogger;
 
 import java.util.concurrent.TimeUnit;
 
@@ -29,8 +30,13 @@ public class MainActivity extends AppCompatActivity {
 
         OkHttpClient client = new OkHttpClient.Builder()
                 .connectTimeout(10000, TimeUnit.MILLISECONDS)
-                .addInterceptor(new HttpLogInterceptor(Logger.getInstance()))
-//                .addInterceptor(new HttpLogInterceptor())
+                .addInterceptor(new HttpLogInterceptor(new ILogger() {
+                    @Override
+                    public void d(String tag, String msg) {
+                        LogUtils.d(msg);
+                    }
+                }))
+                .addInterceptor(new HttpLogInterceptor())
                 .build();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Urls.BASE_URL)
