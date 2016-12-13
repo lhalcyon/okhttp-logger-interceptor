@@ -1,8 +1,7 @@
 package com.example.interceptor;
 
 import retrofit2.http.GET;
-import retrofit2.http.Headers;
-import retrofit2.http.Query;
+import retrofit2.http.Path;
 import rx.Observable;
 
 /**
@@ -12,7 +11,6 @@ import rx.Observable;
  */
 public interface Api {
 
-    @Headers("apikey:"+Constant.API_KEY)
-    @GET(Urls.RECIPE)
-    Observable<Response> recipe(@Query("name")String name);
+    @GET(Urls.USER)
+    Observable<UserInfoResponse> userInfo(@Path("user") String user);
 }

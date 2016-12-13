@@ -27,8 +27,6 @@ import static okhttp3.internal.http.StatusLine.HTTP_CONTINUE;
 public class HttpLogInterceptor implements Interceptor {
 
     private static final Charset UTF8 = Charset.forName("UTF-8");
-    private static String TAG = "Halcyon";
-
 
 
     public HttpLogInterceptor() {
@@ -55,16 +53,16 @@ public class HttpLogInterceptor implements Interceptor {
         if (hasRequestBody) {
             requestStartMessage += " (" + requestBody.contentLength() + "-byte body)";
         }
-        logger.d(TAG,requestStartMessage);
+        logger.log(requestStartMessage);
 
         if (hasRequestBody) {
             // Request body headers are only present when installed as a network interceptor. Force
             // them to be included (when available) so there values are known.
             if (requestBody.contentType() != null) {
-                logger.d(TAG,"Content-Type: " + requestBody.contentType());
+                logger.log("Content-Type: " + requestBody.contentType());
             }
             if (requestBody.contentLength() != -1) {
-                logger.d(TAG,"Content-Length: " + requestBody.contentLength());
+                logger.log("Content-Length: " + requestBody.contentLength());
             }
         }
 
@@ -73,14 +71,14 @@ public class HttpLogInterceptor implements Interceptor {
             String name = headers.name(i);
             // Skip headers from the request body as they are explicitly logged above.
             if (!"Content-Type".equalsIgnoreCase(name) && !"Content-Length".equalsIgnoreCase(name)) {
-                logger.d(TAG,name + ": " + headers.value(i));
+                logger.log(name + ": " + headers.value(i));
             }
         }
 
         if (!hasRequestBody) {
-            logger.d(TAG,"--> END " + request.method());
+            logger.log("--> END " + request.method());
         } else if (bodyEncoded(request.headers())) {
-            logger.d(TAG,"--> END " + request.method() + " (encoded body omitted)");
+            logger.log("--> END " + request.method() + " (encoded body omitted)");
         } else {
             Buffer buffer = new Buffer();
             requestBody.writeTo(buffer);
@@ -90,10 +88,10 @@ public class HttpLogInterceptor implements Interceptor {
                 charset = contentType.charset(UTF8);
             }
 
-            logger.d(TAG,"");
-            logger.d(TAG,JsonUtil.convert(buffer.readString(charset)));
+            logger.log("");
+            logger.log(JsonUtil.convert(buffer.readString(charset)));
 
-            logger.d(TAG,"--> END " + request.method()
+            logger.log("--> END " + request.method()
                     + " (" + requestBody.contentLength() + "-byte body)");
         }
 
@@ -103,18 +101,18 @@ public class HttpLogInterceptor implements Interceptor {
 
         ResponseBody responseBody = response.body();
         long contentLength = responseBody.contentLength();
-        logger.d(TAG,"<-- " + response.code() + ' ' + response.message() + ' '
+        logger.log("<-- " + response.code() + ' ' + response.message() + ' '
                 + response.request().url() + " (" + tookMs + "ms" + ')');
 
         Headers responseHeaders = response.headers();
         for (int i = 0, count = headers.size(); i < count; i++) {
-            logger.d(TAG,responseHeaders.name(i) + ": " + responseHeaders.value(i));
+            logger.log(responseHeaders.name(i) + ": " + responseHeaders.value(i));
         }
 
         if (!hasBody(response)) {
-            logger.d(TAG,"<-- END HTTP");
+            logger.log("<-- END HTTP");
         } else if (bodyEncoded(response.headers())) {
-            logger.d(TAG,"<-- END HTTP (encoded body omitted)");
+            logger.log("<-- END HTTP (encoded body omitted)");
         } else {
             BufferedSource source = responseBody.source();
             source.request(Long.MAX_VALUE); // Buffer the entire body.
@@ -126,20 +124,20 @@ public class HttpLogInterceptor implements Interceptor {
                 try {
                     charset = contentType.charset(UTF8);
                 } catch (UnsupportedCharsetException e) {
-                    logger.d(TAG,"");
-                    logger.d(TAG,"Couldn't decode the response body; charset is likely malformed.");
-                    logger.d(TAG,"<-- END HTTP");
+                    logger.log("");
+                    logger.log("Couldn't decode the response body; charset is likely malformed.");
+                    logger.log("<-- END HTTP");
 
                     return response;
                 }
             }
 
             if (contentLength != 0) {
-                logger.d(TAG,"");
-                logger.d(TAG,"\n" + JsonUtil.convert(buffer.clone().readString(charset)));
+                logger.log("");
+                logger.log("\n" + JsonUtil.convert(buffer.clone().readString(charset)));
             }
 
-            logger.d(TAG,"<-- END HTTP (" + buffer.size() + "-byte body)");
+            logger.log("<-- END HTTP (" + buffer.size() + "-byte body)");
         }
 
         return response;

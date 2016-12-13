@@ -2,20 +2,18 @@ package com.halcyon.logger;
 
 import android.util.Log;
 
-
 public interface ILogger {
 
+    String TAG = "Halcyon";
 
     ILogger DEFAULT = new ILogger() {
 
         @Override
-        public void d(String tag, String msg) {
-            Log.d(tag,msg);
+        public void log(String msg) {
+            Log.i(TAG,msg);
         }
-
     };
 
-    void d(String tag, String msg);
-
+    void log(String msg);
 
 }

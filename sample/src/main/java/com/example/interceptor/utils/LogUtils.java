@@ -18,8 +18,6 @@ package com.example.interceptor.utils;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.example.interceptor.BuildConfig;
-
 
 /**
  * Log工具，类似android.util.Log。
@@ -36,7 +34,7 @@ public class LogUtils {
         customTagPrefix = str;
     }
 
-    public static boolean isDebuging = BuildConfig.DEBUG;
+    public static boolean isDebuging = true;
 
 
     private static String generateTag(StackTraceElement caller) {

@@ -5,5 +5,4 @@ package com.example.interceptor;
  */
 
 public interface Constant {
-    String API_KEY = "708910d942ff7a252714d3301db61e66";
 }
