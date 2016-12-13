@@ -26,26 +26,26 @@ Square有提供一个 [okhttp-logging-interceptor](https://github.com/square/okh
 
 或者 Maven
 
-```
+```xml
 <dependency>
   <groupId>com.lhalcyon</groupId>
   <artifactId>okhttp-logger-interceptor</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.2</version>
   <type>pom</type>
 </dependency> 
 ```
 
 或者 通过Gradle
 
-```
-compile 'com.lhalcyon:okhttp-logger-interceptor:1.0.0'
+```groovy
+compile 'com.lhalcyon:okhttp-logger-interceptor:1.0.2'
 ```
 
 
 
 ## Usage
 
-```
+```java
  OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(new HttpLogInterceptor()) 
                 .build();
@@ -53,7 +53,7 @@ compile 'com.lhalcyon:okhttp-logger-interceptor:1.0.0'
 
 无参构造默认使用的是`android.util.Log` .对于有日志开关需求的,可以传入一个`com.halcyon.logger.ILogger`的实现类.`LogUtils`是[Sample](https://github.com/lhalcyon/okhttp-logger-interceptor/tree/master/sample)中的自定义日志工具类,开关为`BuildConfig.DEBUG`
 
-```
+```java
 OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(new HttpLogInterceptor(new ILogger() {
                     @Override
