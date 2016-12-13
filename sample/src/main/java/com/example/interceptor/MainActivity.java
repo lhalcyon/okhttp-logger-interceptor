@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         mApi = retrofit.create(Api.class);
     }
 
-    public void recipe(View v) {
+    public void request(View v) {
         mApi
                 .userInfo("lhalcyon")
                 .subscribeOn(Schedulers.newThread())
